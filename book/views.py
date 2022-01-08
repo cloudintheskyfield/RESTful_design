@@ -2,6 +2,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.views.generic import View
+from rest_framework import serializers
+
 from book.models import BookInfo
 from django.http import JsonResponse
 import json
@@ -138,3 +140,26 @@ class BookDetailView(View):
         book.delete()
 
         return JsonResponse({},status=204)
+
+
+"""
+我们的序列化器目的将对象转换为字典数据
+"""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
