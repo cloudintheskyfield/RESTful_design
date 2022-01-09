@@ -39,11 +39,13 @@ import json
 数据验证全都到序列化器中了
 """
 
+
 # Create your views here.
 class BookListView(View):
     """
     查询所有图书、增加图书
     """
+
     def get(self, request):
         """
         查询所有图书
@@ -79,7 +81,8 @@ class BookListView(View):
             'id': book.id,
             'name': book.name,
             'pub_date': book.pub_date
-        },safe=False)
+        }, safe=False)
+
 
 class BookDetailView(View):
     """
@@ -87,6 +90,7 @@ class BookDetailView(View):
     修改图书信息
     删除图书
     """
+
     def get(self, request, pk):
         """
         获取单个图书信息
@@ -95,7 +99,7 @@ class BookDetailView(View):
         try:
             book = BookInfo.objects.get(id=pk)
         except BookInfo.DoesNotExist:
-            return JsonResponse({},status=404)
+            return JsonResponse({}, status=404)
 
         return JsonResponse({
             'id': book.id,
@@ -111,7 +115,7 @@ class BookDetailView(View):
         try:
             book = BookInfo.objects.get(id=pk)
         except BookInfo.DoesNotExist:
-            return JsonResponse({},status=404)
+            return JsonResponse({}, status=404)
 
         json_bytes = request.body
         json_str = json_bytes.decode()
@@ -137,11 +141,11 @@ class BookDetailView(View):
         try:
             book = BookInfo.objects.get(id=pk)
         except BookInfo.DoesNotExist:
-            return JsonResponse({},status=404)
+            return JsonResponse({}, status=404)
 
         book.delete()
 
-        return JsonResponse({},status=204)
+        return JsonResponse({}, status=204)
 
 
 """
@@ -162,6 +166,7 @@ serializer.data
 
 ############### 传递多个 ###########3
 from book.models import BookInfo
+
 # 1.获取所有书籍
 books = BookInfo.objects.all()
 # 2.实例序列化
@@ -181,14 +186,13 @@ OrderedDict('id', 4), ('name', '雪山飞狐'), ('pub_date', '1987-11-11'), ('re
 ##### 外键的序列化器的定义 ################
 from book.serializers import PeopleInfoSerializer
 from book.models import PeopleInfo
+
 # 1.模拟查询对象
 person = PeopleInfo.objects.get(id=1)
 # 2.创建序列化器
 serializer = PeopleInfoSerializer(instance=person)
 # 3.获取序列化
 serializer.data
-
-
 
 #######################      反序列化   ###################
 """
@@ -222,6 +226,7 @@ serializer.data
         
 """
 from book.serializers import BookInfoSerializer
+
 # 将字典转换为对象
 # 1.模拟字典数据
 data = {
@@ -244,6 +249,7 @@ serializer.is_valid(raise_exception=True)
 ---------分割线-------将对象传给序列化器，查询数据------------
 """
 from book.models import BookInfo
+
 # 1.模拟获取一个对象
 book = BookInfo.objects.get(id=1)
 # 2.创建序列化器
@@ -255,12 +261,13 @@ serializer.data
 反序列化数据验证-----------将 字典 传给序列化器来进行 创建数据--------
 """
 from book.serializers import BookInfoSerializer
+
 # 1.模拟字典数据
 data = {
     'name': 'django',
     'pub_date': '2022-1-9',
     'readcount': 100,
-    'commentcount':99,
+    'commentcount': 99,
 }
 # 2.创建序列化器，将字典数据传递给序列化器 一定要传关键字 不能省略！
 serializer = BookInfoSerializer(data=data)
@@ -269,18 +276,18 @@ serializer.is_valid(raise_exception=True)
 # 4.验证数据没有问题之后，就可以调用保存方法了
 serializer.save()
 
-
 """
 分割线-----------将对象 和 字典同时传给序列化器 进行验证保存数据 认为更新数据---------------
 """
 from book.serializers import BookInfoSerializer
 from book.models import BookInfo
+
 # 1.模拟一个对象数据
 book = BookInfo.objects.get(id=1)
 # 2.模拟一个字典数据
 data = {
     'name': '射雕英雄后转',
-    'pub_date':'2022-1-9',
+    'pub_date': '2022-1-9',
     # 有readcount的验证需要传
     'readcount': 666,
     'commentcount': 250,
@@ -298,9 +305,10 @@ serializer.data
 -------------序列化器类----------------
 """
 from book.serializers import BookInfoModelSerializer
+
 data = {
     'name': '射雕英雄~~~~~',
-    'pub_date':'2022-1-9',
+    'pub_date': '2022-1-9',
     # 有readcount的验证需要传
     'readcount': 666,
     'commentcount': 250,
@@ -309,33 +317,47 @@ serializer = BookInfoModelSerializer(data=data)
 serializer.is_valid(raise_exception=True)
 serializer.save()
 
-
 """
 --------------分割线--------------
 """
 from book.serializers import BookInfoModelSerializer
-BookInfoModelSerializer()
 
+BookInfoModelSerializer()
 
 """
 -----反序列化--字典转对象保存----------------分割线 level～3----------------------
 """
 from book.serializers import BookInfoModelSerializer, PeopleInfoModelSerializer
-from book.models import BookInfo,PeopleInfo
+from book.models import BookInfo, PeopleInfo
+
 # 1.模拟字典数据
-data = {
-    # 'book': 1,   前端如果传book使用book，传book_id的化重写book_id字段
-    'book_id':1,
-    'name': '大大怪上士',
-    'password': '123456abc',
+data = [
+    # 创建多个数据 需要many=true
+    {
+        # 'book': 1,   前端如果传book使用book，传book_id的化重写book_id字段
+        'book_id': 1,
+        'name': '111',
+        'password': '123456abc',
 
-    'description': '脑袋被门夹了变帅的男人',
+        'description': '脑袋被门夹了变帅的男人',
 
-    # 不需要传 但是要返回is_delete
-    'is_delete': True       # 不希望前端传过来，但是用户通过postman硬加了这个数据
-}
+        # 不需要传 但是要返回is_delete
+        'is_delete': True  # 不希望前端传过来，但是用户通过postman硬加了这个数据
+    },
+    {
+        # 'book': 1,   前端如果传book使用book，传book_id的化重写book_id字段
+        'book_id': 1,
+        'name': '222',
+        'password': '123456abc',
+
+        'description': '脑袋被门夹了变帅的男人',
+
+        # 不需要传 但是要返回is_delete
+        'is_delete': True  # 不希望前端传过来，但是用户通过postman硬加了这个数据
+    }
+]
 # 2.将数据传递给序列化器
-serializer = PeopleInfoModelSerializer(data=data)
+serializer = PeopleInfoModelSerializer(data=data, many=True)
 # 3.验证数据
 serializer.is_valid(raise_exception=True)
 # 4.保存数据 save()不能在serializer.data后面使用
