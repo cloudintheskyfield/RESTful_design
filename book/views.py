@@ -195,15 +195,21 @@ serializer.data
     例如：
         DateField需要满足YYY-MM-DD
         IntegerField需要满足整形
+2.通过字段的选项来验证数据
+    例如：CharField(max_length=10, min_length=1)
+        IntegerField(max_value=10,min_value=1)
+        required默认为true
+        read_only：只用于序列化使用，反序列化的时候忽略该字段
+        write_only：只用于反序列化使用，序列化的时候忽略该字段
 """
 from book.serializers import BookInfoSerializer
 # 将字典转换为对象
 # 1.模拟字典数据
 data = {
-    'id': '1',
-    'name': '从入门到放弃',
-    'pub_date': '200',
-    'readcount': 666
+    # 'id': '1',
+    'name': '入dao门',
+    'pub_date': '2020-1-1',
+    'readcount': 19
 }
 # 2.创建序列化容器，将字典数据给序列化器
 # BookInfoSerializer(instance, data)
@@ -215,9 +221,14 @@ serializer.is_valid(raise_exception=True)
 
 # 4.获取对象
 
-
-
-
+""" """
+from book.models import BookInfo
+# 1.模拟获取一个对象
+book = BookInfo.objects.get(id=1)
+# 2.创建序列化器
+serializer = BookInfoSerializer(instance=book)
+# 3.获取序列化的字典数据
+serializer.data
 
 
 
