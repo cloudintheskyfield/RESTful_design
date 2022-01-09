@@ -132,6 +132,33 @@ class PeopleInfoSerializer(serializers.Serializer):
 4.book:{id:1, name:射雕英雄转, readcount:10}---BookInfoSerializer
 
 """
+"""
+--------------------分割线-------------系统的序列化器类
+"""
+class BookInfoModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookInfo
+        # all即BookInfo里所有显示的字段
+        fields = '__all__'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

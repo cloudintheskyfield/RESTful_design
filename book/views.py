@@ -294,6 +294,20 @@ serializer.save()
 # 6.数据的查询操作
 serializer.data
 
+"""
+-------------序列化器类----------------
+"""
+from book.serializers import BookInfoModelSerializer
+data = {
+    'name': '射雕英雄~~~~~',
+    'pub_date':'2022-1-9',
+    # 有readcount的验证需要传
+    'readcount': 666,
+    'commentcount': 250,
+}
+serializer = BookInfoModelSerializer(data=data)
+serializer.is_valid(raise_exception=True)
+serializer.save()
 
 
 
