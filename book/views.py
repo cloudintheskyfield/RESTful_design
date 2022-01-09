@@ -240,7 +240,9 @@ serializer.is_valid(raise_exception=True)
 
 # 4.获取对象
 
-""" """
+""" 
+---------分割线-------将对象传给序列化器，查询数据------------
+"""
 from book.models import BookInfo
 # 1.模拟获取一个对象
 book = BookInfo.objects.get(id=1)
@@ -249,7 +251,9 @@ serializer = BookInfoSerializer(instance=book)
 # 3.获取序列化的字典数据
 serializer.data
 
-"""反序列化数据验证"""
+"""
+反序列化数据验证-----------将 字典 传给序列化器来进行 创建数据--------
+"""
 from book.serializers import BookInfoSerializer
 # 1.模拟字典数据
 data = {
@@ -266,6 +270,29 @@ serializer.is_valid(raise_exception=True)
 serializer.save()
 
 
+"""
+分割线-----------将对象 和 字典同时传给序列化器 进行验证保存数据 认为更新数据---------------
+"""
+from book.serializers import BookInfoSerializer
+from book.models import BookInfo
+# 1.模拟一个对象数据
+book = BookInfo.objects.get(id=1)
+# 2.模拟一个字典数据
+data = {
+    'name': '射雕英雄后转',
+    'pub_date':'2022-1-9',
+    # 有readcount的验证需要传
+    'readcount': 666,
+    'commentcount': 250,
+}
+# 3.把对象和字典都传递给序列化器
+serializer = BookInfoSerializer(instance=book, data=data)
+# 4.验证数据
+serializer.is_valid(raise_exception=True)
+# 5.数据的保存操作
+serializer.save()
+# 6.数据的查询操作
+serializer.data
 
 
 

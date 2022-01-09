@@ -75,6 +75,16 @@ class BookInfoSerializer(serializers.Serializer):
     # email = serializers.EmailField()
     # uuid = serializers.UUIDField()
 
+    def update(self, instance, validated_data):
+        # get(key, default)
+        # 如果get的key是一个none，则使用默认值
+        instance.name = validated_data.get('name', instance.name)
+        instance.pub_date = validated_data.get('pub_date', instance.pub_date)
+        instance.readcount = validated_data.get('readcount', instance.readcount)
+        instance.commentcount = validated_data.get('commentcount', instance.commentcount)
+        instance.save()     # 调用save()方法保存，数据才会入库
+        return instance
+
 
 ####### 定义任务模型对应的序列化器 ################
 class PeopleInfoSerializer(serializers.Serializer):
