@@ -317,3 +317,20 @@ from book.serializers import BookInfoModelSerializer
 BookInfoModelSerializer()
 
 
+"""
+-----反序列化--字典转对象保存----------------分割线 level～3----------------------
+"""
+from book.serializers import BookInfoModelSerializer, PeopleInfoModelSerializer
+from book.models import BookInfo,PeopleInfo
+# 1.模拟字典数据
+data = {
+    'book': 1,
+    'name': 'GoodBoy',
+    'password': '123456abc',
+}
+# 2.将数据传递给序列化器
+serializer = PeopleInfoModelSerializer(data=data)
+# 3.验证数据
+serializer.is_valid(raise_exception=True)
+# 4.保存数据
+serializer.save()
