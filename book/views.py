@@ -188,6 +188,35 @@ serializer.data
 
 
 
+#######################      反序列化   ###################
+"""
+序列化器验证数据的第一种形式：
+1.我们的数据类型，可以帮助我们在反序列化的时候，验证传入数据的类型
+    例如：
+        DateField需要满足YYY-MM-DD
+        IntegerField需要满足整形
+"""
+from book.serializers import BookInfoSerializer
+# 将字典转换为对象
+# 1.模拟字典数据
+data = {
+    'id': '1',
+    'name': '从入门到放弃',
+    'pub_date': '200',
+    'readcount': 666
+}
+# 2.创建序列化容器，将字典数据给序列化器
+# BookInfoSerializer(instance, data)
+# instance 用于序列化 data用于反序列化
+serializer = BookInfoSerializer(data=data)
+# 3.验证数据
+# 验证数据，正确返回True，错误返回false, 有异常的化会抛除
+serializer.is_valid(raise_exception=True)
+
+# 4.获取对象
+
+
+
 
 
 

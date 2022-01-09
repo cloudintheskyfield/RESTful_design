@@ -41,7 +41,11 @@ class BookInfoSerializer(serializers.Serializer):
     pub_date = serializers.DateField()
     readcount = serializers.IntegerField()
     # 隐藏的外键 需要单独定义一个类 一本书关联多个人物 级连关系的数据获取
-    people = PeopleForeignSerializer(many=True)
+    # 在测试反序列化的时候， 有下面的这一项测试数据不会成功
+    # people = PeopleForeignSerializer(many=True)
+    email = serializers.EmailField()
+    uuid = serializers.UUIDField()
+
 
 ####### 定义任务模型对应的序列化器 ################
 class PeopleInfoSerializer(serializers.Serializer):
@@ -89,3 +93,7 @@ class PeopleInfoSerializer(serializers.Serializer):
 4.book:{id:1, name:射雕英雄转, readcount:10}---BookInfoSerializer
 
 """
+
+
+
+
