@@ -60,8 +60,15 @@ class BookInfoSerializer(serializers.Serializer):
             raise serializers.ValidationError('评论量不能大于阅读量')
         if readcount < 0:
             raise serializers.ValidationError('阅读量不能小于0  22')
-
         return attrs
+
+    def create(self, validated_data):
+        # 解包传入的字典
+        return BookInfo.objects.create(**validated_data)
+    """
+    如果我们的序列化器继承自Serializer，当调用序列化器的save方法的时候，会
+    调用序列化器的create方法
+    """
     # 隐藏的外键 需要单独定义一个类 一本书关联多个人物 级连关系的数据获取
     # 在测试反序列化的时候， 有下面的这一项测试数据不会成功
     # people = PeopleForeignSerializer(many=True)

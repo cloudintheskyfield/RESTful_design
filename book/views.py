@@ -35,6 +35,8 @@ import json
     1.接收参数
     2.查询指定数据
     3.返回响应
+    
+数据验证全都到序列化器中了
 """
 
 # Create your views here.
@@ -251,15 +253,17 @@ serializer.data
 from book.serializers import BookInfoSerializer
 # 1.模拟字典数据
 data = {
-    'name': 'python',
+    'name': 'django',
     'pub_date': '2022-1-9',
     'readcount': 100,
-    'commentcount': 101,
+    'commentcount':99,
 }
 # 2.创建序列化器，将字典数据传递给序列化器 一定要传关键字 不能省略！
 serializer = BookInfoSerializer(data=data)
 # 3.验证数据
 serializer.is_valid(raise_exception=True)
+# 4.验证数据没有问题之后，就可以调用保存方法了
+serializer.save()
 
 
 
