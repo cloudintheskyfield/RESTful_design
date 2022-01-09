@@ -324,8 +324,9 @@ from book.serializers import BookInfoModelSerializer, PeopleInfoModelSerializer
 from book.models import BookInfo,PeopleInfo
 # 1.模拟字典数据
 data = {
-    'book': 1,
-    'name': 'GoodBoy',
+    # 'book': 1,   前端如果传book使用book，传book_id的化重写book_id字段
+    'book_id':1,
+    'name': 'BadBoy',
     'password': '123456abc',
 }
 # 2.将数据传递给序列化器

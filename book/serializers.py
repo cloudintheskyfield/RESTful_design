@@ -172,9 +172,13 @@ class PeopleInfoModelSerializer(serializers.ModelSerializer):
     # book = serializers.PrimaryKeyRelatedField(queryset=BookInfo.objects.all())
     # name = serializers.CharField(max_length=20)
     # password = serializers.CharField(max_length=20)
+
+    # 使用book_id需要重写 IntegerField既能写入又可以读取
+    book_id = serializers.IntegerField()
     class Meta:
         model = PeopleInfo
-        fields = ['id','book', 'name', 'password']
+        # fields = ['id','book', 'name', 'password']
+        fields = ['id','book_id', 'name', 'password']
 
         extra_kwargs = {
             'password': {
