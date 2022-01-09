@@ -21,3 +21,15 @@ class BookInfoSerializer(serializers.Serializer):
     pub_date = serializers.DateField()
     readcount = serializers.IntegerField()
 
+####### 定义任务模型对应的序列化器 ################
+class PeopleInfoSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
+    password = serializers.CharField()
+    description = serializers.CharField()
+    is_delete = serializers.BooleanField()
+    # 对外键进行学习
+    # 1.如果我们定义的序列化器外键字段类型为IntegerField那么，我们定义的序列化器字段名必须和数据库中的字段名字一致
+    book_id = serializers.IntegerField()
+
+

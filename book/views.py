@@ -158,8 +158,33 @@ serializer = BookInfoSerializer(instance=book)
 # 3：获取序列化器，将对象转换为字典的数据
 serializer.data
 
+############### 传递多个 ###########3
+from book.models import BookInfo
+# 1.获取所有书籍
+books = BookInfo.objects.all()
+# 2.实例序列化
+serializer = BookInfoSerializer(instance=books, many=True)
+# 3.获取序列化
+serializer.data
 
+"""
+[
+OrderedDict([('id', 1), ('name', '射雕英雄传'), ('pub_date', '1980-05-01'), ('readcount', 12)]), 
+OrderedDict([('id', 2), ('name', '天龙八部'), e', '1986-07-24'), ('readcount', 36)]),
+OrderedDict([('id', 3), ('name', '笑傲江湖'), ('pub_date', '1995-12-24'), ('readcount', 20)]), 
+OrderedDict('id', 4), ('name', '雪山飞狐'), ('pub_date', '1987-11-11'), ('readcount', 58)])
+]
 
+"""
+##### 外键的序列化器的定义 ################
+from book.serializers import PeopleInfoSerializer
+from book.models import PeopleInfo
+# 1.模拟查询对象
+person = PeopleInfo.objects.get(id=1)
+# 2.创建序列化器
+serializer = PeopleInfoSerializer(instance=person)
+# 3.获取序列化
+serializer.data
 
 
 
