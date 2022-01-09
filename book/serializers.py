@@ -37,6 +37,9 @@ class PeopleInfoSerializer(serializers.Serializer):
     # 那么PrimaryKeyRelatedField就可以获取关联的数据的模型id值
     # 如果设置外键QuerySet在验证数据的时候，我们要告诉系统，在哪里匹配外键数据 下面两种都可以
     # book = serializers.PrimaryKeyRelatedField(read_only=True)   # 意思就是不验证数据了
-    book = serializers.PrimaryKeyRelatedField(queryset=BookInfo.objects.all())  # 去哪里找外键数据
+    # book = serializers.PrimaryKeyRelatedField(queryset=BookInfo.objects.all())  # 去哪里找外键数据
 
+    # 3.如果我们期望获取外键关联的 字符串 的信息， 这个时候 我们可以使用 StringRelationField
+    # 即__str__方法中的self.name 的信息
+    book = serializers.StringRelatedField()
 
