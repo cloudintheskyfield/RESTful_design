@@ -59,3 +59,11 @@ class PeopleInfoSerializer(serializers.Serializer):
          )
      }
     """
+
+"""
+1.book:1---PrimaryKeyRelationField
+2.book_id:1---IntegerField
+3.book:射雕英雄转---StringRelationField
+4.book:{id:1, name:射雕英雄转, readcount:10}---BookInfoSerializer
+
+"""
