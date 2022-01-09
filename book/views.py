@@ -326,12 +326,14 @@ from book.models import BookInfo,PeopleInfo
 data = {
     # 'book': 1,   前端如果传book使用book，传book_id的化重写book_id字段
     'book_id':1,
-    'name': 'BadBoy',
+    'name': '小小怪下士',
     'password': '123456abc',
+    # 不需要传 但是要返回is_delete
+    'is_delete': True       # 不希望前端传过来，但是用户通过postman硬加了这个数据
 }
 # 2.将数据传递给序列化器
 serializer = PeopleInfoModelSerializer(data=data)
 # 3.验证数据
 serializer.is_valid(raise_exception=True)
-# 4.保存数据
+# 4.保存数据 save()不能在serializer.data后面使用
 serializer.save()

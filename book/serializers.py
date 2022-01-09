@@ -178,11 +178,15 @@ class PeopleInfoModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = PeopleInfo
         # fields = ['id','book', 'name', 'password']
-        fields = ['id','book_id', 'name', 'password']
+        fields = ['id','book_id', 'name', 'password', 'is_delete']
 
         extra_kwargs = {
             'password': {
                 'write_only': True
+            },
+            'is_delete': {
+                # 即便传递了 也不会使用传过来的is_delete，models中默认为false
+                'read_only': True
             }
         }
 
