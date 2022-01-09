@@ -31,15 +31,31 @@ class PeopleInfoSerializer(serializers.Serializer):
 
     # 对外键进行学习
     # 1.如果我们定义的序列化器外键字段类型为IntegerField那么，我们定义的序列化器字段名必须和数据库中的字段名字一致
+    # 拿到外键关联 id 值
     # book_id = serializers.IntegerField()
 
     # 2.如果不想写book_id,希望的外键数据的key就是模型字段的名字，
     # 那么PrimaryKeyRelatedField就可以获取关联的数据的模型id值
     # 如果设置外键QuerySet在验证数据的时候，我们要告诉系统，在哪里匹配外键数据 下面两种都可以
+    # 拿到外键关联 id 值
     # book = serializers.PrimaryKeyRelatedField(read_only=True)   # 意思就是不验证数据了
     # book = serializers.PrimaryKeyRelatedField(queryset=BookInfo.objects.all())  # 去哪里找外键数据
 
     # 3.如果我们期望获取外键关联的 字符串 的信息， 这个时候 我们可以使用 StringRelationField
     # 即__str__方法中的self.name 的信息
-    book = serializers.StringRelatedField()
+    # 拿到外键字符串中的信息
+    # book = serializers.StringRelatedField()
 
+    # 4.book = 关联的BookInfo的一个关联对象数据，如果我们期望 获得book关联的模型的所有数据 为    book = BookInfoSerializer()
+    # book = BookInfo.objects.get(id=xxx)
+    # book = BookInfoSerializer(instance=book).data
+    # 等号右面的book为模型对象，等号左面 的为
+    book = BookInfoSerializer()
+    """
+    {
+        'id': 1, 'name': '郭靖', 'password': '123456abc', 'description': '降龙十八掌', 'is_delete': False,
+         'book': OrderedDict(
+            [('id', 1), ('name', '射('pub_date', '1980-05-01'), ('readcount', 12)]
+         )
+     }
+    """
