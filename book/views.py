@@ -310,6 +310,10 @@ serializer.is_valid(raise_exception=True)
 serializer.save()
 
 
-
+"""
+--------------分割线--------------
+"""
+from book.serializers import BookInfoModelSerializer
+BookInfoModelSerializer()
 
 

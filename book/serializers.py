@@ -136,13 +136,28 @@ class PeopleInfoSerializer(serializers.Serializer):
 --------------------分割线-------------系统的序列化器类
 """
 class BookInfoModelSerializer(serializers.ModelSerializer):
+    # 1.重写，会调用重写的方法
+    # name = serializers.CharField(min_length=5, max_length=10, required=True)
     class Meta:
-        model = BookInfo
-        # all即BookInfo里所有显示的字段
-        fields = '__all__'
+        model = BookInfo    # ModelSerializer 必须设置 model
+        # all即BookInfo里所有显示的字段 注意fields和exclude必须设置其一
+        fields = '__all__'  # fields设置自动生成的字段列表
+        # fields = ()
+        # fields = ['id', 'name']
+        # exclude = ['id', 'name']    # 除了列表外的字段都生成
 
+        # read_only 只读字段列表
+        read_only_fields = ['id', 'name', 'pub_date']
 
+        # 2.设置extra_kwargs设置字段选项信息
+        extra_kwargs = {
+            # '字段名':{'选项名字':value,},
+            'name':{
+                'max_length':40,
+                'min_length':10,
 
+            }
+        }
 
 
 
