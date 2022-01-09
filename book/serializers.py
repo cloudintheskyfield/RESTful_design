@@ -159,6 +159,12 @@ class PeopleInfoSerializer(serializers.Serializer):
 #             }
 #         }
 
+
+
+
+
+
+
 """
 分割线=================-----------------------------------------等级三
 1.将对象转换为字典---序列化
@@ -174,7 +180,9 @@ class PeopleInfoModelSerializer(serializers.ModelSerializer):
     # password = serializers.CharField(max_length=20)
 
     # 使用book_id需要重写 IntegerField既能写入又可以读取
-    book_id = serializers.IntegerField()
+    #
+    book_id = serializers.IntegerField(required=False)
+
     class Meta:
         model = PeopleInfo
         # fields = ['id','book', 'name', 'password']
@@ -190,10 +198,34 @@ class PeopleInfoModelSerializer(serializers.ModelSerializer):
             }
         }
 
+
 class BookInfoModelSerializer(serializers.ModelSerializer):
+
+    people = PeopleInfoModelSerializer(many=True)
+
     class Meta:
         model = BookInfo
         fields = '__all__'
+
+    """
+    序列化器嵌套序列化器写入数据的时候，默认系统是不支持写入的
+    我们需要自己实现create方法来实现数据的写入
+    
+    写入数据的思想是：因为当前书籍和人物的关系是1对多，应该先写入1的模型数据，再写入多的模型数据
+    1.data.pop('people')  
+    2.遍历 或者 many=True进行写入
+        
+    """
+    def create(self, validated_data):
+        # 1.分离数据
+        people = validated_data.pop('people')
+        # 2.写入剩下的数据
+        book = BookInfo.objects.create(**validated_data)
+        # 3.对字典列表进行遍历
+        for item in people:
+            PeopleInfo.objects.create(book=book, **item)  # book=book 指定外键关联的书籍
+        # 4.返回
+        return book
 
 
 

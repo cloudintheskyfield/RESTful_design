@@ -362,3 +362,42 @@ serializer = PeopleInfoModelSerializer(data=data, many=True)
 serializer.is_valid(raise_exception=True)
 # 4.保存数据 save()不能在serializer.data后面使用
 serializer.save()
+
+
+
+
+
+######## 前端传递的新的数据类型 ###################
+from book.serializers import BookInfoModelSerializer, PeopleInfoModelSerializer
+from book.models import BookInfo, PeopleInfo
+
+# 1.模拟数据
+data = {
+    'name': '离离原上草',
+    'people': [
+        {
+            'name': '靖妹妹111',
+            'password': '123456abc'
+        },
+        {
+            'name': '靖表哥222',
+            'password': '123456abc'
+        }
+    ]
+}
+# 方案1：比较易懂的方式
+# name = data.get('name')
+# book = BookInfo.objects.create(name=name)
+# people = data.get('people')
+# 2.传给序列化器
+# serializer = PeopleInfoModelSerializer(data=data, many=True)
+
+# 方案2：这个data就类似于PeopleInfoSerializer
+# 定义了一个BookInfoSerializer，在BookInfo中有一个字段，
+# people
+
+# 2.将数据传递给序列化器
+serializer = BookInfoModelSerializer(data=data)
+# 3.验证数据
+serializer.is_valid(raise_exception=True)
+
