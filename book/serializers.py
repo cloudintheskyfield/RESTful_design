@@ -14,12 +14,34 @@ claass 序列化器名字（serializers.Serializer）
 """
 from rest_framework import serializers
 from book.models import BookInfo
+# 隐藏的外键
+class PeopleForeignSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
+    password = serializers.CharField()
+    # description = serializers.CharField()
+    # is_delete = serializers.BooleanField()
+
+"""
+{
+    'id': 1, 'name': '射雕英雄传', 'pub_date': '1980-05-01', 'readcount': 12, 
+    'people': [
+                    OrderedDict([('id', 1), ('name', '郭靖'), ('password', '12')]),
+                     OrderedDict([('id', 2), ('name', '黄蓉'), ('password', '123456abc')]), 
+                     OrderedDict([('id', 3), ('name', '黄药师'), ('password', '123456abc)]),
+                      OrderedDict([('id', 4), ('name', '欧阳锋'), ('password', '123456abc')]), 
+                     OrderedDict([('id', 5), ('name', '梅超风'), ('password', '123456abc')],
+}
+"""
+
 
 class BookInfoSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     name = serializers.CharField()
     pub_date = serializers.DateField()
     readcount = serializers.IntegerField()
+    # 隐藏的外键 需要单独定义一个类 一本书关联多个人物 级连关系的数据获取
+    people = PeopleForeignSerializer(many=True)
 
 ####### 定义任务模型对应的序列化器 ################
 class PeopleInfoSerializer(serializers.Serializer):
