@@ -39,7 +39,14 @@ class BookInfoSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(write_only=True, max_length=10, min_length=5)
     pub_date = serializers.DateField(required=True)
-    readcount = serializers.IntegerField(max_value=20)
+    readcount = serializers.IntegerField(required=False)
+    def validate_readcount(self, value):
+        # 检测到数据没有问题 返回数据
+        if value < 0:
+            # raise Exception('阅读量不能为负数')  自己定义的异常
+            # 系统抛除异常
+            raise serializers.ValidationError('阅读量不能为负数')
+        return value
     # 隐藏的外键 需要单独定义一个类 一本书关联多个人物 级连关系的数据获取
     # 在测试反序列化的时候， 有下面的这一项测试数据不会成功
     # people = PeopleForeignSerializer(many=True)

@@ -201,6 +201,12 @@ serializer.data
         required默认为true
         read_only：只用于序列化使用，反序列化的时候忽略该字段
         write_only：只用于反序列化使用，序列化的时候忽略该字段
+3.如果我们的数据满足类型要求，又满足选项要求，我们如果需要对数据进行进一步验证的时候，可以实现以下方法：
+    以validate_ 开头，接字段名字的方法
+    例如：
+        def validate_readcount(self, value):    value为字段对应的值
+            
+            return value
 """
 from book.serializers import BookInfoSerializer
 # 将字典转换为对象
@@ -230,6 +236,18 @@ serializer = BookInfoSerializer(instance=book)
 # 3.获取序列化的字典数据
 serializer.data
 
+"""反序列化数据验证"""
+from book.serializers import BookInfoSerializer
+# 1.模拟字典数据
+data = {
+    'name': 'python',
+    'pub_date': '2022-1-9',
+    'readcount': -100,
+}
+# 2.创建序列化器，将字典数据传递给序列化器 一定要传关键字 不能省略！
+serializer = BookInfoSerializer(data=data)
+# 3.验证数据
+serializer.is_valid(raise_exception=True)
 
 
 
