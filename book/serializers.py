@@ -74,7 +74,7 @@ class PeopleInfoSerializer(serializers.Serializer):
     # 等号右面的book为模型对象，等号左面 的为
     book = BookInfoSerializer()
     """
-    {
+    { 
         'id': 1, 'name': '郭靖', 'password': '123456abc', 'description': '降龙十八掌', 'is_delete': False,
          'book': OrderedDict(
             [('id', 1), ('name', '射('pub_date', '1980-05-01'), ('readcount', 12)]
