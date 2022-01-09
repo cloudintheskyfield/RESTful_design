@@ -326,8 +326,11 @@ from book.models import BookInfo,PeopleInfo
 data = {
     # 'book': 1,   前端如果传book使用book，传book_id的化重写book_id字段
     'book_id':1,
-    'name': '小小怪下士',
+    'name': '大大怪上士',
     'password': '123456abc',
+
+    'description': '脑袋被门夹了变帅的男人',
+
     # 不需要传 但是要返回is_delete
     'is_delete': True       # 不希望前端传过来，但是用户通过postman硬加了这个数据
 }

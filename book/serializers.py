@@ -178,7 +178,7 @@ class PeopleInfoModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = PeopleInfo
         # fields = ['id','book', 'name', 'password']
-        fields = ['id','book_id', 'name', 'password', 'is_delete']
+        fields = ['id','book_id', 'name', 'password', 'is_delete', 'description']
 
         extra_kwargs = {
             'password': {
