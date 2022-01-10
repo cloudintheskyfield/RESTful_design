@@ -190,3 +190,18 @@ class BookInfoGenericAPIView(GenericAPIView):
         serializer.save()
         return Response(serializer.data)
 
+"""
+二级视图与Mixin配合使用
+"""
+from rest_framework.mixins import ListModelMixin, CreateModelMixin
+class BookInfoGenericMixinAPIView(ListModelMixin, CreateModelMixin, GenericAPIView):
+    # 查询结果集
+    queryset = BookInfo.objects.all()
+    # 序列化器
+    serializer_class = BookInfoModelSerializer
+
+    def get(self, request):
+        return self.list(request)
+
+    def post(self, request):
+        return self.create(request)
