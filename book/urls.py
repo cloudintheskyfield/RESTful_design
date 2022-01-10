@@ -12,6 +12,8 @@ urlpatterns = [
 
     # 二级视图与mixin配合使用
     path('mixinbooks/', views.BookInfoGenericMixinAPIView.as_view()),
+    # 详情视图
+    path('mixinbooks/<pk>', views.BookInfoDetailGenericMixinAPIView.as_view()),
 
     # 三级视图
     path('thirdbooks/', views.BookInfoListCreateAPIView.as_view()),

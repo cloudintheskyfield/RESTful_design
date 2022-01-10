@@ -236,6 +236,16 @@ class BookInfoGenericMixinAPIView(ListModelMixin, CreateModelMixin, GenericAPIVi
     def post(self, request):
         return self.create(request)
 
+
+"""
+详情视图
+"""
+from rest_framework.mixins import RetrieveModelMixin
+class BookInfoDetailGenericMixinAPIView(RetrieveModelMixin, GenericAPIView):
+    queryset = BookInfo.objects.all()
+    serializer_class = BookInfoModelSerializer
+    def get(self, request, pk):
+        return self.retrieve(request)
 """
 三级视图
 """
@@ -245,3 +255,5 @@ class BookInfoListCreateAPIView(ListCreateAPIView):
     queryset = BookInfo.objects.all()
     # 序列化器
     serializer_class = BookInfoModelSerializer
+
+from rest_framework.generics import RetrieveAPIView
