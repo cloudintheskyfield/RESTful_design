@@ -114,3 +114,19 @@ from rest_framework.views import APIView
 """
 使用APIView来实现 列表视图的功能 即增删改查
 """
+from rest_framework.views import APIView
+from book.models import BookInfo
+from book.serializers import BookInfoModelSerializer
+
+class BookListAPIView(APIView):
+    def get(self, request):
+        # 1.查询所有数据
+        book = BookInfo.objects.all()
+        # 2.将查询结果集遍历，转换为字典列表（序列化）
+        serializer = BookInfoModelSerializer(instance=book, many=True)
+        # 3.返回响应
+        return JsonResponse({'code': 'get', 'books':serializer.data})
+
+    def post(self, request):
+        return JsonResponse({'code': 'post'})
+
