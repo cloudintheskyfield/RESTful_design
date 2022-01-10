@@ -5,4 +5,6 @@ urlpatterns = [
     path('books/<int:pk>/', views.BookDetailView.as_view()),
 
     path('apibooks/', views.BookListAPIView.as_view()),
+    path('genericbooks/', views.BookInfoGenericAPIView.as_view()),
+
 ]

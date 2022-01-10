@@ -151,3 +151,42 @@ class BookListAPIView(APIView):
         # return JsonResponse({'code': 'post'})
         return Response(serializer.data)
 
+"""
+GenericAPIView 比 APIView扩展了一些属性和方法
+属性
+    queryset 设置查询结果集
+    serializer_class 设置序列化器
+方法
+    books = self.get_queryset()
+    serializer = self.get_serializer(books, many=True)
+"""
+from rest_framework.generics import GenericAPIView
+class BookInfoGenericAPIView(GenericAPIView):
+    # 查询结果集
+    queryset = BookInfo.objects.all()
+    # 序列化器
+    serializer_class = BookInfoModelSerializer
+
+    def get(self, request):
+        # 1.查询所有数据
+        # books = BookInfo.objects.all()
+        # books = self.queryset
+        books = self.get_queryset()
+
+        # 2.创建序列化器
+        # serializer = BookInfoModelSerializer(books, many=True)
+        # serializer = self.serializer_class(books, many=True)
+        serializer = self.get_serializer(books, many=True)
+
+        # 3.返回响应
+        return Response(serializer.data)
+    def post(self, request):
+        # 1.接收数据
+        data = request.data
+        # 2.验证参数
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid()
+        # 3.保存数据
+        serializer.save()
+        return Response(serializer.data)
+
