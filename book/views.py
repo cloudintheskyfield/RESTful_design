@@ -229,7 +229,14 @@ class BookInfoDetailGenericAPIView(GenericAPIView):
         return Response(serializer.data)
         pass
 
-    def delete(self):
+    def delete(self, request, pk):
+        # 1.接收参数，查询数据
+        book = self.get_object()
+        # 2.操作数据库
+        book.delete()
+        # 3.返回响应
+        from rest_framework import status
+        return Response(status=status.HTTP_204_NO_CONTENT)
         pass
 """
 二级视图与Mixin配合使用
@@ -252,8 +259,8 @@ class BookInfoGenericMixinAPIView(ListModelMixin, CreateModelMixin, GenericAPIVi
 """
 详情视图
 """
-from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
-class BookInfoDetailGenericMixinAPIView(RetrieveModelMixin, UpdateModelMixin, GenericAPIView):
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
+class BookInfoDetailGenericMixinAPIView(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAPIView):
     queryset = BookInfo.objects.all()
     serializer_class = BookInfoModelSerializer
     def get(self, request, pk):
@@ -261,6 +268,7 @@ class BookInfoDetailGenericMixinAPIView(RetrieveModelMixin, UpdateModelMixin, Ge
 
     def put(self, request, pk):
         return self.update(request)
+
 """
 三级视图
 """
@@ -275,3 +283,8 @@ class BookInfoListCreateAPIView(ListCreateAPIView):
 
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import UpdateAPIView
+from rest_framework.generics import DestroyAPIView
+from rest_framework.generics import CreateAPIView
+from rest_framework.generics import ListAPIView
+
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
