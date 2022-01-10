@@ -140,6 +140,14 @@ class BookListAPIView(APIView):
     def post(self, request):
         # django --- request.POST , request.body
         # dfs --- request.data
+        # 1.获取参数
         data = request.data
-        return JsonResponse({'code': 'post'})
+        # 2.验证参数
+        serializer = BookInfoModelSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        # 3.保存数据
+        serializer.save()
+        # 4.返回响应
+        # return JsonResponse({'code': 'post'})
+        return Response(serializer.data)
 
