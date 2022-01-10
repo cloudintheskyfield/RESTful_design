@@ -5,8 +5,11 @@ urlpatterns = [
     path('books/<int:pk>/', views.BookDetailView.as_view()),
 
     path('apibooks/', views.BookListAPIView.as_view()),
-    #
+    # 二级视图
     path('genericbooks/', views.BookInfoGenericAPIView.as_view()),
+    # 详情视图
+    path('genericbooks/<id>/', views.BookInfoDetailGenericAPIView.as_view()),
+
     # 二级视图与mixin配合使用
     path('mixinbooks/', views.BookInfoGenericMixinAPIView.as_view()),
 

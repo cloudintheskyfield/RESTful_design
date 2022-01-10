@@ -156,11 +156,14 @@ GenericAPIView 比 APIView扩展了一些属性和方法
 属性
     queryset 设置查询结果集
     serializer_class 设置序列化器
+    lookup_field = 'id'  设置查询指定数据的关键字参数
 方法
-    books = self.get_queryset()
-    serializer = self.get_serializer(books, many=True)
+    books = self.get_queryset()                             获取查询结果集
+    serializer = self.get_serializer(instance=books, many=True)      获取序列化器实例
+    book = self.get_object()                                获取指定的数据
 """
 from rest_framework.generics import GenericAPIView
+# 列表视图
 class BookInfoGenericAPIView(GenericAPIView):
     # 查询结果集
     queryset = BookInfo.objects.all()
@@ -190,9 +193,36 @@ class BookInfoGenericAPIView(GenericAPIView):
         serializer.save()
         return Response(serializer.data)
 
+# 详情视图
+class BookInfoDetailGenericAPIView(GenericAPIView):
+    # 查询结果集---惰性，写了不会立即查询（这里查询所有数据即可）， 后续的代码可以采用 self.queryset.filter(id=pk)
+    queryset = BookInfo.objects.all()
+    # 设置序列化器
+    serializer_class =BookInfoModelSerializer
+
+    # 设置关键字参数的名字
+    lookup_field = 'id'
+    def get(self, request, id):
+        # 1.查询指定数据
+        # book = BookInfo.objects.get(id=pk)
+        # 下面两种方案都可以
+        # book = self.queryset.filter(id=pk)
+        # book = self.get_queryset().filter(id=pk)
+        book = self.get_object()
+        # 2.将对象数据转换为字典数据
+        serializer = self.get_serializer(instance=book)
+        return Response(serializer.data)
+        pass
+
+    def put(self, request, pk):
+        pass
+
+    def delete(self):
+        pass
 """
 二级视图与Mixin配合使用
 """
+# 列表视图
 from rest_framework.mixins import ListModelMixin, CreateModelMixin
 class BookInfoGenericMixinAPIView(ListModelMixin, CreateModelMixin, GenericAPIView):
     # 查询结果集
