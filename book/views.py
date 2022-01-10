@@ -201,8 +201,8 @@ class BookInfoDetailGenericAPIView(GenericAPIView):
     serializer_class =BookInfoModelSerializer
 
     # 设置关键字参数的名字
-    lookup_field = 'id'
-    def get(self, request, id):
+    # lookup_field = 'id'
+    def get(self, request, pk):
         # 1.查询指定数据
         # book = BookInfo.objects.get(id=pk)
         # 下面两种方案都可以
@@ -214,7 +214,19 @@ class BookInfoDetailGenericAPIView(GenericAPIView):
         return Response(serializer.data)
         pass
 
+    # 更新数据
     def put(self, request, pk):
+        # 1.查询指定的数据
+        book = self.get_object()
+        # 2.接收参数，获取参数
+        data = request.data
+        # 3.验证参数
+        serializer = self.get_serializer(instance=book, data=data)
+        serializer.is_valid(raise_exception=True)
+        # 4.更新数据
+        serializer.save()
+        # 5.返回响应
+        return Response(serializer.data)
         pass
 
     def delete(self):
@@ -240,12 +252,15 @@ class BookInfoGenericMixinAPIView(ListModelMixin, CreateModelMixin, GenericAPIVi
 """
 详情视图
 """
-from rest_framework.mixins import RetrieveModelMixin
-class BookInfoDetailGenericMixinAPIView(RetrieveModelMixin, GenericAPIView):
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
+class BookInfoDetailGenericMixinAPIView(RetrieveModelMixin, UpdateModelMixin, GenericAPIView):
     queryset = BookInfo.objects.all()
     serializer_class = BookInfoModelSerializer
     def get(self, request, pk):
         return self.retrieve(request)
+
+    def put(self, request, pk):
+        return self.update(request)
 """
 三级视图
 """
@@ -256,4 +271,7 @@ class BookInfoListCreateAPIView(ListCreateAPIView):
     # 序列化器
     serializer_class = BookInfoModelSerializer
 
+
+
 from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import UpdateAPIView
