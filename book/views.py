@@ -117,9 +117,15 @@ from rest_framework.views import APIView
 from rest_framework.views import APIView
 from book.models import BookInfo
 from book.serializers import BookInfoModelSerializer
+from django.http import HttpRequest   # django
+from rest_framework.request import Request  # drf
 
 class BookListAPIView(APIView):
     def get(self, request):
+        # django --- request.GET
+        # drf --- request.query_params
+        query_params = request.query_params
+
         # 1.查询所有数据
         book = BookInfo.objects.all()
         # 2.将查询结果集遍历，转换为字典列表（序列化）
@@ -128,5 +134,8 @@ class BookListAPIView(APIView):
         return JsonResponse({'code': 'get', 'books':serializer.data})
 
     def post(self, request):
+        # django --- request.POST , request.body
+        # dfs --- request.data
+        data = request.data
         return JsonResponse({'code': 'post'})
 
