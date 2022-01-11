@@ -31,6 +31,7 @@ class BookListView(View):
         新增图书
         路由：POST /books/
         """
+        # book_dict = json.loads(request.body.decode())
         json_bytes = request.body
         json_str = json_bytes.decode()
         book_dict = json.loads(json_str)
@@ -122,6 +123,8 @@ from django.http import HttpResponse    # django
 from rest_framework.request import Request  # drf
 from rest_framework.response import Response  # drf
 from rest_framework import status  # drf
+
+"""一级视图 查询所有书籍 增加一本书籍"""
 class BookListAPIView(APIView):
     def get(self, request):
         # django --- request.GET
@@ -269,11 +272,20 @@ class BookInfoDetailGenericMixinAPIView(RetrieveModelMixin, UpdateModelMixin, De
     def put(self, request, pk):
         return self.update(request)
 
+    def delete(self, request, pk):
+        return self.destroy(request)
 """
 三级视图
 """
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.generics import ListCreateAPIView
 class BookInfoListCreateAPIView(ListCreateAPIView):
+    # 查询结果集
+    queryset = BookInfo.objects.all()
+    # 序列化器
+    serializer_class = BookInfoModelSerializer
+
+class BookInfoRetrieveUpdateDestroyAPIview(RetrieveUpdateDestroyAPIView):
     # 查询结果集
     queryset = BookInfo.objects.all()
     # 序列化器
@@ -288,3 +300,69 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.generics import ListAPIView
 
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
+
+"""
+视图集 继承自APIView ----> APIView继承自View   也分3个等级！！！用的最多的是3级
+如果我们把增删改查都方法哦一个视图集里，原则上是不行的！！！
+为什么？？
+因为一个类视图的http方法 不能重复
+获取数据有 2个get get所有数据 get某一个数据
+"""
+from rest_framework.viewsets import ViewSet
+from django.shortcuts import get_object_or_404
+# class BookViewSet(ViewSet):
+#     def list(self, request):
+#         pass
+#     def create(self, request):
+#         pass
+#     def retrieve(self, request, pk=None):
+#         pass
+#     def update(self, request, pk=None):
+#         pass
+#     def partial_update(self, request, pk=None):
+#         pass
+#     def destroy(self, request, pk=None):
+#         pass
+
+class BookViewSet(ViewSet):
+    # 获取所有的书籍 GET books/
+    def list(self, request):
+        queryset = BookInfo.objects.all()
+        serializer = BookInfoModelSerializer(queryset, many=True)
+        return Response(serializer.data)
+    # 获取指定书籍 GET books/pk/
+    def retrieve(self, request, pk=None):
+        queryset = BookInfo.objects.all()
+        user = get_object_or_404(queryset, pk=pk)
+        serializer = BookInfoModelSerializer(user)
+        return Response(serializer.data)
+
+
+"""
+ModelViewSet
+也可以理解为4级视图
+
+兄弟 ReadOnlyModelViewSet
+"""
+from rest_framework.viewsets import ModelViewSet
+
+# ModelViewSet的基本使用
+class BookInfoModelViewSet(ModelViewSet):
+    queryset = BookInfo.objects.all()
+    serializer_class = BookInfoModelSerializer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
