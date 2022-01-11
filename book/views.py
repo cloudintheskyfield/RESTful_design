@@ -352,6 +352,26 @@ class BookInfoModelViewSet(ModelViewSet):
     serializer_class = BookInfoModelSerializer
 
 
+"""
+高级功能：
+    1.概念
+    2.配置
+    3.效果
+"""
+from book.models import PeopleInfo
+from book.serializers import PeopleInfoModelSerializer
+# 人物视图集
+class PeopleInfoModelViewSet(ModelViewSet):
+    # 下面的属性 和 重写的方法是相同的，具有相同的功效
+    # queryset = PeopleInfo.objects.all()
+    def get_queryset(self):
+        return PeopleInfo.objects.all()
+
+    # serializer_class = PeopleInfoModelSerializer
+    def get_serializer_class(self):
+        return PeopleInfoModelSerializer
+
+
 
 
 

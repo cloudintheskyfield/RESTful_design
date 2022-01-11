@@ -40,7 +40,7 @@ DefaultRouter 和 SimpleRouter
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
 # 1.创建路由/router实例
-router = SimpleRouter()
+router = DefaultRouter()
 # 2.设置列表视图和详情视图的公共部分（不包括/）
 # prefix        （路由）列表视图和详情视图的公共部分（前置代码，前缀）
 #                   Router会生成2个路由，一个是列表视图的路由prefix，另外一个是详情视图的路由prefix/pk/
@@ -51,6 +51,10 @@ router = SimpleRouter()
 #                   basename在前后端不分离的模版中使用的情况较多
 router.register('abc', views.BookInfoModelViewSet, basename='abc')
 # 3.将router生成的路由，追加到urlpatterns
+# urlpatterns += router.urls
+
+
+router.register('people', views.PeopleInfoModelViewSet, basename='people')
 urlpatterns += router.urls
 
 
