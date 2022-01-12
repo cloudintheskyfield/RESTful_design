@@ -125,14 +125,17 @@ from rest_framework.authentication import TokenAuthentication
 
 # 我们在setting配置文件中的设置，所有的DRF类都遵守
 REST_FRAMEWORK = {
-    # 权限 权限需要和下面的认证配合使用
-    'DEFAULT_PERMISSION_CLASSES': [
-        # 只有登录用户才可以访问
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-    # 默认的认证列表： session
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.SessionAuthentication',  #
-        'rest_framework.authentication.TokenAuthentication',  # session认证
-    )
+    # # 权限 权限需要和下面的认证配合使用
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     # 只有登录用户才可以访问
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ],
+    # # 默认的认证列表： session
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework.authentication.SessionAuthentication',
+    #     # 'rest_framework.authentication.TokenAuthentication',  # session认证
+    # ),
+    # # 分页类 只有GenericAPIView及其子类，才能使用分页类， 只有二级视图及子类才能使用分页类
+    # # APIView， ViewSet不能使用该分页类
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
 }

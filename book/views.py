@@ -361,12 +361,29 @@ class BookInfoModelViewSet(ModelViewSet):
 from book.models import PeopleInfo
 from book.serializers import PeopleInfoModelSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly, IsAdminUser, IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
+# 系统为我们提供了两个分页类
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+
+class PageNum(PageNumberPagination):
+    # 开启分页的开关
+    page_size = 5
+    # 设置查询字符串的key，也相当于开关，只有设置了这个值，一页多少条记录才生效
+    # page_size_query_param = 'page_size'
+    page_size_query_param = 'ps'
+
+    # 一页最多有多少条记录
+    max_page_size = 5
+
+
 # 人物视图集
 class PeopleInfoModelViewSet(ModelViewSet):
 
     # 给视图单独设置权限
-    permission_classes = [AllowAny]
-
+    # permission_classes = [AllowAny]
+    # 单独设置分页类 需要重写来设置page_size
+    pagination_class = PageNum
     # 下面的属性 和 重写的方法是相同的，具有相同的功效
     # queryset = PeopleInfo.objects.all()
     def get_queryset(self):
