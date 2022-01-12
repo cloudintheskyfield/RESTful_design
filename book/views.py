@@ -360,8 +360,13 @@ class BookInfoModelViewSet(ModelViewSet):
 """
 from book.models import PeopleInfo
 from book.serializers import PeopleInfoModelSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly, IsAdminUser, IsAuthenticated
 # 人物视图集
 class PeopleInfoModelViewSet(ModelViewSet):
+
+    # 给视图单独设置权限
+    permission_classes = [AllowAny]
+
     # 下面的属性 和 重写的方法是相同的，具有相同的功效
     # queryset = PeopleInfo.objects.all()
     def get_queryset(self):
